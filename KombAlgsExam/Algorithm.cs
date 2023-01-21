@@ -27,7 +27,24 @@
 
         public static IGraphWithWeight YarnikPrimaDejkstra(IGraphWithWeight graph)
         {
+            var result = new GraphWithWeight();
+            var joined = new HashSet<INode>();
+            var joinedList = new List<INode>() { graph.Nodes[0] };
+            while (true)
+            {
+                var nextEdge = joinedList.SelectMany(x => x.Outgoing).Where(x => !joined.Contains(x.End)).MinBy(x => ((EdgeWithWeight)x).Weight);
+                if (nextEdge == null)
+                {
+                    break;
+                }
 
+                result.Edges.Add((IEdgeWithWeight)nextEdge);
+                joined.Add(nextEdge.End);
+                joinedList.Add(nextEdge.End);
+            }
+
+            result.BuildUnorderedFromOrderedEdges();
+            return result;
         }
     }
 }

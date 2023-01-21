@@ -29,14 +29,14 @@
             {
                 if (!dict.ContainsKey(edge.Start.Id))
                 {
-                    var node = new Node();
+                    var node = new Node(edge.Start.Number);
                     dict.Add(edge.Start.Id, node);
                     Nodes.Add(node);
                 }
 
                 if (!dict.ContainsKey(edge.End.Id))
                 {
-                    var node = new Node();
+                    var node = new Node(edge.End.Number);
                     dict.Add(edge.End.Id, node);
                     Nodes.Add(node);
                 }

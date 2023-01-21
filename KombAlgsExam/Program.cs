@@ -12,8 +12,13 @@
 -1	-1	-1	6	8	-1	11
 -1	-1	-1	-1	9	11	-1";
             var graph = GraphCreator.CreateGraphWithWeightFromMatrix(matrix);
-            var newGraph = Algorithm.BoruvkaKraskal(graph);
-            Console.WriteLine(newGraph.GetMatrix());
+            var boruvka = Algorithm.BoruvkaKraskal(graph);
+            Console.WriteLine(boruvka.GetMatrix());
+            Console.WriteLine();
+            var dijkstra = Algorithm.YarnikPrimaDejkstra(graph);
+            Console.WriteLine(dijkstra.GetMatrix());
+            Console.WriteLine("Is Dijkstra and Boruvka same?");
+            Console.WriteLine(dijkstra.GetMatrix() == boruvka.GetMatrix());
         }
     }
 }

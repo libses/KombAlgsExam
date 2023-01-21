@@ -8,7 +8,7 @@ namespace KombAlgsExam
         {
             var result = new GraphWithWeight();
             var lines = matrix.Split("\n").Select(x => x.Split("\t").Select(x => int.Parse(x)).ToArray()).ToArray();
-            var nodes = Enumerable.Range(0, lines.Length).Select(x => new Node()).ToArray();
+            var nodes = Enumerable.Range(0, lines.Length).Select(x => new Node(x)).ToArray();
             for (int i = 0; i < lines.Length; i++)
             {
                 var node = nodes[i];
@@ -32,7 +32,7 @@ namespace KombAlgsExam
         public static string GetMatrix(this IGraphWithWeight graph)
         {
             var i = 0;
-            var nodeToNumber = graph.Nodes.ToDictionary(x => x, y => i++);
+            var nodeToNumber = graph.Nodes.ToDictionary(x => x, y => y.Number);
             var result = new int[nodeToNumber.Count][];
             foreach (var node in graph.Nodes)
             {

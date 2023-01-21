@@ -9,11 +9,14 @@
 
         public Guid Id { get; }
 
-        public Node()
+        public int Number { get; }
+
+        public Node(int number)
         {
             Outgoing = new List<IEdge>();
             Ingoing = new List<IEdge>();
             Id = Guid.NewGuid();
+            Number = number;
         }
 
         public override int GetHashCode()

@@ -13,6 +13,31 @@
             Edges = new List<IEdgeWithWeight>();
         }
 
+        public GraphWithWeight Copy()
+        {
+            var graph = new GraphWithWeight();
+            //НЕ КОПИРУЕЦА
+
+            return graph;
+        }
+
+        public void RemoveNode(INode node)
+        {
+            Nodes.Remove(node);
+            foreach (var o in node.Outgoing)
+            {
+                o.End.Ingoing.Remove(o);
+            }
+
+            foreach (var i in node.Ingoing)
+            {
+                i.Start.Outgoing.Remove(i);
+            }
+
+            node.Ingoing.Clear();
+            node.Outgoing.Clear();
+        }
+
         public void BuildUnorderedFromOrderedEdges()
         {
             if (Nodes.Count > 0)

@@ -46,5 +46,77 @@
             result.BuildUnorderedFromOrderedEdges();
             return result;
         }
+
+        public static int FordBellman(IGraphWithWeight graph, int start, int finish)
+        {
+            var distances = new Dictionary<int, int>();
+            foreach (var v in graph.Nodes)
+            {
+                distances.Add(v.Number, 1000000);
+            }
+
+            distances[start] = 0;
+            for (int i = 0; i < graph.Nodes.Count; i++)
+            {
+                foreach (var edge in graph.Edges)
+                {
+                    if (distances[edge.End.Number] > (distances[edge.Start.Number] + edge.Weight))
+                    {
+                        distances[edge.End.Number] = distances[edge.Start.Number] + edge.Weight;
+                    }
+                }
+            }
+
+            return distances[finish];
+        }
+
+        public static int Dijkstra(IGraphWithWeight graph, int start, int finish)
+        {
+            var distances = new Dictionary<int, int>();
+            foreach (var v in graph.Nodes)
+            {
+                distances.Add(v.Number, 1000000);
+            }
+
+            distances[start] = 0;
+            var visited = new HashSet<INode>();
+            while (visited.Count < graph.Nodes.Count)
+            {
+                var current = graph.Nodes.Where(x => !visited.Contains(x)).MinBy(x => distances[x.Number]);
+                foreach (var e in current.Ingoing)
+                {
+                    if ((distances[e.Start.Number] + ((IEdgeWithWeight)e).Weight) < distances[e.End.Number])
+                    {
+                        distances[e.End.Number] = distances[e.Start.Number] + ((IEdgeWithWeight)e).Weight;
+                    }
+                }
+
+                visited.Add(current);
+            }
+
+            return distances[finish];
+        }
+
+        public static IGraphWithWeight TopolSort(GraphWithWeight graph)
+        {
+            var res = graph.Copy();
+            var numberDict = res.Nodes.ToDictionary(x => x.Number, y => y);
+            var temp = graph.Copy();
+            var n = temp.Nodes.Count - 1;
+            while (true)
+            {
+                var forRemove = temp.Nodes.MinBy(x => x.Ingoing.Count);
+                if (forRemove == null)
+                {
+                    break;
+                }
+
+                temp.RemoveNode(forRemove);
+                numberDict[forRemove.Number].Number = n;
+                n--;
+            }
+
+            return res;
+        }
     }
 }

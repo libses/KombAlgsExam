@@ -9,7 +9,7 @@
 
         public Guid Id { get; }
 
-        public int Number { get; }
+        public int Number { get; set; }
 
         public Node(int number)
         {

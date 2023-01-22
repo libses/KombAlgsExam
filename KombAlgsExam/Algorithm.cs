@@ -1,4 +1,6 @@
-﻿namespace KombAlgsExam
+﻿using System.Runtime.InteropServices;
+
+namespace KombAlgsExam
 {
     public static class Algorithm
     {
@@ -105,7 +107,7 @@
             var n = temp.Nodes.Count - 1;
             while (true)
             {
-                var forRemove = temp.Nodes.MinBy(x => x.Ingoing.Count);
+                var forRemove = temp.Nodes.MinBy(x => x.Outgoing.Count);
                 if (forRemove == null)
                 {
                     break;
@@ -117,6 +119,64 @@
             }
 
             return res;
+        }
+
+        public static int DijkstraMaxMin(IGraphWithWeight graph, int start, int finish)
+        {
+            var distances = new Dictionary<int, int>();
+            foreach (var v in graph.Nodes)
+            {
+                distances.Add(v.Number, -100000000);
+            }
+
+            distances[start] = 100000000;
+            var visited = new HashSet<INode>();
+            while (visited.Count < graph.Nodes.Count)
+            {
+                var current = graph.Nodes.Where(x => !visited.Contains(x)).MaxBy(x => distances[x.Number]);
+                foreach (var e in current.Ingoing)
+                {
+                    if (Math.Min(distances[e.Start.Number], ((IEdgeWithWeight)e).Weight) > distances[e.End.Number])
+                    {
+                        distances[e.End.Number] = Math.Min(distances[e.Start.Number], ((IEdgeWithWeight)e).Weight);
+                    }
+                }
+
+                visited.Add(current);
+            }
+
+            return distances[finish];
+        }
+
+        public static int[,] Floyd(IGraphWithWeight graph)
+        {
+            var n = graph.Nodes.Count;
+            var D = new int[graph.Nodes.Count, graph.Nodes.Count];
+            var numberToNode = graph.Nodes.ToDictionary(x => x.Number, y => y);
+            for (int i = 0; i < graph.Nodes.Count; i++)
+            {
+                for (int j = 0; j < graph.Nodes.Count; j++)
+                {
+                    var second = numberToNode[i].Outgoing.Where(x => x.End.Number == j).ToArray();
+                    D[i, j] = second.Length == 0 ? 1000000 : ((EdgeWithWeight)second[0]).Weight;
+                }
+            }
+
+            for (var k = 0; k < n; k++)
+            {
+                for (var i = 0; i < n; i++)
+                {
+                    for (var j = 0; j < n; j++)
+                    {
+                        if (D[i, j] > (D[i, k] + D[k, j]))
+                        {
+                            D[i, j] = D[i, k] + D[k, j];
+                        }
+                    }
+                }
+            }
+
+            return D;
         }
     }
 }

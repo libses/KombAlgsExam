@@ -53,7 +53,7 @@ namespace KombAlgsExam
             var strResult = new StringBuilder();
             foreach (var row in result)
             {
-                strResult.AppendLine(string.Join(" ", row));
+                strResult.AppendLine(string.Join("\t", row));
             }
             strResult.Remove(strResult.Length - 1, 1);
             return strResult.ToString();

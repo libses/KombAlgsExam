@@ -1,13 +1,5 @@
 ﻿namespace KombAlgsExam
 {
-    public interface IWeighted
-    {
-        public int Weight { get; }
-    }
-
-    public interface IEdgeWithWeight : IWeighted, IEdge
-    {
-    }
 
     public class EdgeWithWeight : Edge, IEdgeWithWeight
     {

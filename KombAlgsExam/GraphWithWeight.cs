@@ -1,9 +1,5 @@
 ﻿namespace KombAlgsExam
 {
-    public interface IGraphWithWeight : IGraph
-    {
-        new List<IEdgeWithWeight> Edges { get; }
-    }
 
     public class GraphWithWeight : Graph, IGraphWithWeight
     {
@@ -15,10 +11,7 @@
 
         public GraphWithWeight Copy()
         {
-            var graph = new GraphWithWeight();
-            //НЕ КОПИРУЕЦА
-
-            return graph;
+            return GraphCreator.CreateGraphWithWeightFromMatrix(this.GetMatrix());
         }
 
         public void RemoveNode(INode node)

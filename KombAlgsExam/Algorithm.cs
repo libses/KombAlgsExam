@@ -85,7 +85,7 @@ namespace KombAlgsExam
             while (visited.Count < graph.Nodes.Count)
             {
                 var current = graph.Nodes.Where(x => !visited.Contains(x)).MinBy(x => distances[x.Number]);
-                foreach (var e in current.Ingoing)
+                foreach (var e in current.Outgoing)
                 {
                     if ((distances[e.Start.Number] + ((IEdgeWithWeight)e).Weight) < distances[e.End.Number])
                     {
